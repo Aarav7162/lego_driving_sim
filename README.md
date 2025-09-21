@@ -1,76 +1,86 @@
-# LEGO Pneumatic Pedals + Steering Controller Dashboard
+# LEGO Pneumatic Pedals & Steering Controller Dashboard
 
-This project turns a custom LEGO pneumatic pedal + steering wheel build into a fully working PC controller with a live dashboard.
+Turn your custom LEGO pneumatic pedals and steering wheel into a fully working PC controller, complete with a live, interactive dashboard.
 
-- **Pedals:** LEGO pneumatic assemblies.  
-  - Gas pedal mapped from a gamepad’s right stick forward.
-  - Brake pedal uses an ultrasonic sensor on an ESP8266 with simple quadratic motion detection to smooth out distance and realys speed changes.
-- **Steering:** Custom LEGO steering wheel with LT/RT inputs or joystick mapping.
-
-The program (python) reads all of these, simulates keyboard keypresses (`W` for throttle) and displays live throttle/brake values on a stylish HTML dashboard.
+With this setup:  
+- Your gas pedal is mapped to your gamepad’s right stick forward.  
+- Your brake pedal uses an ultrasonic sensor on an ESP8266, with smooth quadratic motion detection to mimic real pedal behavior.  
+- The steering wheel can be mapped to joystick or keyboard inputs.  
+- Everything is displayed live on a sleek HTML dashboard, so you can watch your throttle, brake, and pedal motion in real time.  
 
 ---
 
-## Repository Contents:
+## Repository Contents
 
-- controller_server.py
-  Python script. Reads joystick, polls ESP for brake value, holds/releases `W`, and runs a Flask server to provide JSON to the dashboard.
+- controller_server.py  
+  Reads your gamepad, polls the ESP for brake data, simulates keyboard keypresses (W for throttle), and serves live data to the dashboard via Flask.
 
-- dashboard.html
-  HTML+CSS dashboard with a liquid glass look. Fetches live throttle and brake values from the Python server.
+- dashboard.html  
+  A stylish liquid-glass dashboard that fetches real-time throttle and brake values. Works in any modern browser.  
 
-- esp_brake.ino
-  ESP8266 sketch. Reads ultrasonic sensor distance, applies a small quadratic smoothing step to better reflect pedal motion, and serves the value at `/brake` over Wi-Fi.
+- esp_brake.ino  
+  ESP8266 code for the brake pedal. Reads distance from the ultrasonic sensor, applies quadratic smoothing, and serves the processed value over Wi-Fi at /brake.
 
-- images/
-  Photos of the LEGO steering wheel and pneumatic pedal build. Add your pictures here for documentation.
-
+- images/  
+  Add your photos here for documentation or to showcase your LEGO setup.
 
 ---
 
 ## How It Works
 
-1. **ESP8266 + Ultrasonic Sensor**  
-   The ESP8266 measures brake pedal distance using an ultrasonic sensor. A lightweight quadratic filter is applied so that small pedal movements translate to smooth “acceleration” values. It hosts a minimal HTTP endpoint at `/brake` that returns this processed number.
+1. ESP8266 + Ultrasonic Sensor  
+   The ESP measures the brake pedal’s distance. A small quadratic filter smooths out tiny movements so your brake feels natural and responsive. The ESP hosts a simple HTTP endpoint (/brake) that returns this value.
 
-2. **Python script**  
-   - Uses `pygame` to read the right stick forward of your controller.
-   - Uses `pyautogui` to press and release the `W` key automatically when throttle > deadzone.
-   - Polls the ESP endpoint for brake values in real time.
-   - Serves both throttle and the processed brake/acceleration data via Flask at `http://localhost:5000/data`.
+2. Python Controller Server  
+   - Reads your controller’s right stick forward to detect throttle.  
+   - Automatically presses and releases the W key using pyautogui when throttle exceeds the deadzone.  
+   - Polls the ESP for real-time brake values.  
+   - Serves both throttle and brake data to the dashboard at http://localhost:5000/data.  
 
-3. **Dashboard (`dashboard.html`)**  
-   - Opens in any browser.
-   - Fetches JSON from `http://localhost:5000/data` every 200 ms.
-   - Displays throttle, brake and the smoothed motion values with a sleek liquid-glass panel.
+3. Dashboard  
+   - Open dashboard.html in any browser.  
+   - Fetches live JSON data every 200 ms.  
+   - Displays throttle, brake, and smoothed motion with a modern, liquid-glass look.  
+   - Visual feedback makes it easy to see exactly how your LEGO pedals are performing.  
 
 ---
 
-## Installation & Usage
+## Getting Started
 
-1. Flash `esp_brake.ino` to your ESP8266. Edit SSID/password and ultrasonic pins to match your hardware. After it connects to Wi-Fi, note the IP address printed in Serial Monitor. Hard-set this IP in `controller_server.py` under `ESP_IP`.
+1. Flash the ESP8266  
+   - Open esp_brake.ino.  
+   - Set your Wi-Fi SSID/password and configure the ultrasonic sensor pins.  
+   - Upload to your ESP and check the Serial Monitor for its IP address.  
+   - Update ESP_IP in controller_server.py with this address.  
 
-2. On your PC:
+2. Install Python Dependencies  
    ```bash
    pip install pygame pyautogui flask requests
-   python controller_server.py
 
-3. Run the Controller Server  
+3. Run the Controller Server
 
+    Start the Python server:
     ```bash
     python controller_server.py
 
-4. Open the Dashboard  
+4. Open the Dashboard
 
-Open `dashboard.html` in your browser to launch the live dashboard.  
-You’ll see **Throttle**, **Brake**, and **smoothed Motion** values update in real time.
+Open `dashboard.html` in a browser. You’ll see live updates for:
 
-- **Push the right stick forward**: `W` will be held down automatically.  
-- **Move your brake pedal**: the ultrasonic sensor’s **quadratic motion detection** updates live.  
+- **Throttle**  
+- **Brake**  
+- **Smoothed pedal motion**
 
 ---
 
-## Credits  
+5. Controls
 
-- **Hardware design and integration**, and most of the Python logic: Aarav Kapasi 
-- **HTML dashboard styling** and certain ESP8266 code blocks were generated with the help of AI and then configured by Aarav Kapasi    
+- **Right stick forward**: Presses `W` automatically  
+- **Brake pedal movement**: Updates live using the ESP’s **quadratic motion detection**
+
+---
+
+# Credits
+
+- **Hardware and Python logic**: Aarav Kapasi  
+- **HTML dashboard and ESP snippets**: Generated with AI and customized by Aarav Kapasi  
