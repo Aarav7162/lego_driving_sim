@@ -66,6 +66,5 @@ You’ll see **Throttle**, **Brake**, and **smoothed Motion** values update in r
 
 ## Credits  
 
-- **Hardware design and integration**, and most of the Python logic: *Your Name*  
-- **HTML dashboard styling** and certain ESP8266 code blocks were generated with the help of AI and then adapted by *Your Name*  
-- The **quadratic ultrasonic motion detection approach** for smoother braking was designed by *Your Name*  
+- **Hardware design and integration**, and most of the Python logic: Aarav Kapasi 
+- **HTML dashboard styling** and certain ESP8266 code blocks were generated with the help of AI and then configured by Aarav Kapasi    
