@@ -4,21 +4,27 @@ This project turns a custom LEGO pneumatic pedal + steering wheel build into a f
 
 - **Pedals:** LEGO pneumatic assemblies.  
   - Gas pedal mapped from a gamepad’s right stick forward.
-  - Brake pedal uses an **ultrasonic sensor** on an ESP8266 with simple **quadratic motion detection** to smooth out distance → speed changes.
+  - Brake pedal uses an ultrasonic sensor on an ESP8266 with simple quadratic motion detection to smooth out distance and realys speed changes.
 - **Steering:** Custom LEGO steering wheel with LT/RT inputs or joystick mapping.
 
-The system reads all of these, simulates keyboard keypresses (`W` for throttle) and displays live throttle/brake values on a stylish HTML dashboard.
+The program (python) reads all of these, simulates keyboard keypresses (`W` for throttle) and displays live throttle/brake values on a stylish HTML dashboard.
 
 ---
 
-## Repository Contents
+##Repository Contents:
 
-| File/Folder         | Description |
-|--------------------|-------------|
-| `controller_server.py` | Python script. Reads joystick, polls ESP for brake value, holds/releases `W`, and runs a Flask server to provide JSON to the dashboard. |
-| `dashboard.html`    | HTML+CSS dashboard with a liquid glass look. Fetches live throttle and brake values from the Python server. |
-| `esp_brake.ino`     | ESP8266 sketch. Reads ultrasonic sensor distance, applies a small quadratic smoothing step to better reflect pedal motion, and serves the value at `/brake` over Wi-Fi. |
-| `images/`           | Photos of the LEGO steering wheel and pneumatic pedal build. Add your pictures here for documentation. |
+- controller_server.py
+  Python script. Reads joystick, polls ESP for brake value, holds/releases `W`, and runs a Flask server to provide JSON to the dashboard.
+
+- dashboard.html
+  HTML+CSS dashboard with a liquid glass look. Fetches live throttle and brake values from the Python server.
+
+- esp_brake.ino
+  ESP8266 sketch. Reads ultrasonic sensor distance, applies a small quadratic smoothing step to better reflect pedal motion, and serves the value at `/brake` over Wi-Fi.
+
+- images/
+  Photos of the LEGO steering wheel and pneumatic pedal build. Add your pictures here for documentation.
+
 
 ---
 
