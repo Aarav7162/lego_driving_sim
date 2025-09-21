@@ -48,3 +48,24 @@ The system reads all of these, simulates keyboard keypresses (`W` for throttle) 
    ```bash
    pip install pygame pyautogui flask requests
    python controller_server.py
+
+3. Run the Controller Server  
+
+    ```bash
+    python controller_server.py
+
+4. Open the Dashboard  
+
+Open `dashboard.html` in your browser to launch the live dashboard.  
+You’ll see **Throttle**, **Brake**, and **smoothed Motion** values update in real time.
+
+- **Push the right stick forward**: `W` will be held down automatically.  
+- **Move your brake pedal**: the ultrasonic sensor’s **quadratic motion detection** updates live.  
+
+---
+
+## Credits  
+
+- **Hardware design and integration**, and most of the Python logic: *Your Name*  
+- **HTML dashboard styling** and certain ESP8266 code blocks were generated with the help of AI and then adapted by *Your Name*  
+- The **quadratic ultrasonic motion detection approach** for smoother braking was designed by *Your Name*  
