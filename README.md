@@ -11,7 +11,7 @@ The program (python) reads all of these, simulates keyboard keypresses (`W` for 
 
 ---
 
-##Repository Contents:
+## Repository Contents:
 
 - controller_server.py
   Python script. Reads joystick, polls ESP for brake value, holds/releases `W`, and runs a Flask server to provide JSON to the dashboard.
