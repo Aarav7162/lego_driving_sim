@@ -63,8 +63,6 @@ With this setup:
 5. Controls
    - Right stick forward (throttle): Directly controls acceleration in the game. Is connected to the pneumatic pedals.
    - Brake pedal (cloud): Presses and holds `S` when value exceeds threshold. Is connected to the pneumatic pedals.
-   - LT: Presses and holds `D`.
-   - RT: Presses and hold `A`
    - Steering wheel: Mechanically connected to a controller. Converted to keyboard input via Python script with:
       - LT: Presses and holds `D`.
       - RT: Presses and hold `A`
