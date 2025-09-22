@@ -13,13 +13,13 @@ With this setup:
 ## Repository Contents
 
 - controller_server.py  
-  Reads the Xbox controller and the ESP for brake data, simulates keyboard keypresses (W for accelerate), and sends live data to the dashboard (the dashboard was made completely with ChatGPT, along with some server logic for the ESP too).
+  Reads the controller for steering and throttle. Converts brake inputs from the cloud into keypresses.
 
 - dashboard.html  
-  A dashboard that fetches throttle, steering and brake values. Works in any browser.  
+  Displays live braking values from Ninja IoT cloud. Updates every 200ms.
 
 - esp_brake.ino  
-  ESP8266 code for the brake pedal. Reads distance from the ultrasonic sensor, applies smoothing, and serves the processed value over Wi-Fi at /brake.
+  Reads brake pedal and writes `braking_value` to Ninja IoT.
 
 - images/  
   The photos of the steering controller and pedals. I'll be linking this repository with a rebrickable page soon for the tutorial if anyone wants to build it. I'll post the building tips there. Just look up Aarav7162 on rebrickable and keep an eye out (i'll update the repo too).
@@ -28,19 +28,12 @@ With this setup:
 
 ## How It Works
 
-1. ESP8266 and Ultrasonic Sensor  
-   The ESP measures the brake pedal’s distance. A small filter smooths out tiny movements so the brake feels natural. The ESP hosts a HTTP endpoint (/brake) that returns this value.
-
-2. Python Controller Server  
-   - Reads your controller’s right stick forward to detect acceleration.  
-   - Automatically presses and releases the W key using pyautogui when throttle exceeds the threshold (around 0.05 on the right stick of the controller).  
-   - Reads the ESP for real-time brake values.  
-   - Serves both throttle and brake data to the dashboard at http://localhost:5000/data.  
-
-3. Dashboard  
-   - Open dashboard.html in any browser.  
-   - Fetches live JSON data every 200 ms.  
-   - Displays acceleration, brake, and smoothed motion.   
+1. ESP8266 reads the LEGO brake pedal and writes `braking_value` to Ninja IoT.
+2. Python controller server:
+   - Reads steering inputs from the game controller.
+   - Converts brake inputs from the cloud into `S` (RT) or `D` (LT) keypresses.
+   - Automatically handles controller calibration if multiple controllers are present.
+3. Dashboard fetches `braking_value` from Ninja IoT every 200ms and displays it live.
 
 ---
 
@@ -48,13 +41,13 @@ With this setup:
 
 1. Flash the ESP8266  
    - Open esp_brake.ino.  
-   - Set your Wi-Fi SSID/password and configure the ultrasonic sensor pins.  
-   - Upload to your ESP and check the Serial Monitor for its IP address.  
-   - Update ESP_IP in controller_server.py with this address.  
+   - Set your Wi-Fi SSID/password/UID and configure the ultrasonic sensor pins.  
 
 2. Install Python Dependencies  
    ```bash
    pip install pygame pyautogui flask requests
+   pip install pynput
+   pip install keyboard // You'll need the admin login for this
 
 3. Run the Controller Server
 
@@ -64,14 +57,18 @@ With this setup:
 
 4. Open the Dashboard
 
-   Open `dashboard.html` in a browser. You’ll see live updates for:
-
-   - **Throttle**  
+   Open `dashboard.html` in a browser. You’ll see live updates for: 
    - **Brake**  
 
 5. Controls
-   - **Right stick forward**: Presses `W` automatically  
-   - **Brake pedal movement**: Updates live using the ESP’s **quadratic motion detection**
+   - Right stick forward (throttle): Directly controls acceleration in the game. Is connected to the pneumatic pedals.
+   - Brake pedal (cloud): Presses and holds `S` when value exceeds threshold. Is connected to the pneumatic pedals.
+   - LT: Presses and holds `D`.
+   - RT: Presses and hold `A`
+   - Steering wheel: Mechanically connected to a controller. Converted to keyboard input via Python script with:
+      - LT: Presses and holds `D`.
+      - RT: Presses and hold `A`
+
 
 # Credits
 >  **Hardware and Python logic**: Aarav Kapasi  
