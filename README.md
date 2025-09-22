@@ -69,5 +69,5 @@ With this setup:
 
 
 # Credits
->  **Hardware and Python logic**: Aarav Kapasi  
->  **HTML dashboard and ESP snippets**: Generated with AI and customized by Aarav Kapasi  
+>  **Hardware, ESP and Python logic**: Aarav Kapasi  
+>  **HTML dashboard**: Generated with AI and customized by Aarav Kapasi  
