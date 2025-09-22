@@ -43,26 +43,30 @@
 <div id="unit">units</div>
 
 <script>
+let displayedValue = 0;
+
 async function updateBrakeValue() {
   try {
-    const resp = await fetch('https://iot.roboninja.in/index.php?action=read&UID=YOUR_UID&braking_value');
+    const resp = await fetch('https://iot.roboninja.in/index.php?action=read&UID=AK11&braking_value');
     const text = await resp.text();
-    let value = parseFloat(text);
+    const irValue = parseInt(text);
 
-    if (isNaN(value)) value = 0;
+    let targetValue = irValue === 0 ? 100 : 0;
+    displayedValue += (targetValue - displayedValue) * 0.05;
 
     const brakeDisplay = document.getElementById('brakeValue');
-    brakeDisplay.textContent = value.toFixed(2);
+    brakeDisplay.textContent = displayedValue.toFixed(0);
 
     const minSize = 4;
     const maxSize = 8;
-    brakeDisplay.style.fontSize = (minSize + (maxSize - minSize) * Math.min(value / 100, 1)) + 'rem';
+    brakeDisplay.style.fontSize = (minSize + (maxSize - minSize) * (displayedValue / 100)) + 'rem';
+
   } catch (e) {
     console.error('Error fetching braking value:', e);
   }
 }
 
-setInterval(updateBrakeValue, 200);
+setInterval(updateBrakeValue, 100);
 </script>
 
 </body>
