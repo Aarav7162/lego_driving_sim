@@ -1,47 +1,46 @@
 # LEGO Pneumatic Pedals & Steering Controller Dashboard
 
-Turn your custom LEGO pneumatic pedals and steering wheel into a fully working PC controller, complete with a live, interactive dashboard.
+This is a custom LEGO build with pneumatic pedals and steering wheel. It uses the ESP8266 and a Xbox contoller to convert it into a working PC controller.
 
 With this setup:  
-- Your gas pedal is mapped to your gamepad’s right stick forward.  
-- Your brake pedal uses an ultrasonic sensor on an ESP8266, with smooth quadratic motion detection to mimic real pedal behavior.  
-- The steering wheel can be mapped to joystick or keyboard inputs.  
-- Everything is displayed live on a sleek HTML dashboard, so you can watch your throttle, brake, and pedal motion in real time.  
+- The gas pedal (controlled by pneumatic pressure) is mapped to the controller's right stick forward.  
+- The brake pedal uses an ultrasonic sensor on an ESP8266.  
+- The steering wheel can be mapped to joystick or keyboard inputs. It uses an Xbox controller and a mechanically contolled steering wheel (photos attached under images/)  
+- Everything is displayed live on the HTML dashboard.  
 
 ---
 
 ## Repository Contents
 
 - controller_server.py  
-  Reads your gamepad, polls the ESP for brake data, simulates keyboard keypresses (W for throttle), and serves live data to the dashboard via Flask.
+  Reads the Xbox controller and the ESP for brake data, simulates keyboard keypresses (W for accelerate), and sends live data to the dashboard (the dashboard was made completely with ChatGPT, along with some server logic for the ESP too).
 
 - dashboard.html  
-  A stylish liquid-glass dashboard that fetches real-time throttle and brake values. Works in any modern browser.  
+  A dashboard that fetches throttle, steering and brake values. Works in any browser.  
 
 - esp_brake.ino  
-  ESP8266 code for the brake pedal. Reads distance from the ultrasonic sensor, applies quadratic smoothing, and serves the processed value over Wi-Fi at /brake.
+  ESP8266 code for the brake pedal. Reads distance from the ultrasonic sensor, applies smoothing, and serves the processed value over Wi-Fi at /brake.
 
 - images/  
-  Add your photos here for documentation or to showcase your LEGO setup.
+  The photos of the steering controller and pedals. I'll be linking this repository with a rebrickable page soon for the tutorial if anyone wants to build it. I'll post the building tips there. Just look up Aarav7162 on rebrickable and keep an eye out (i'll update the repo too).
 
 ---
 
 ## How It Works
 
-1. ESP8266 + Ultrasonic Sensor  
-   The ESP measures the brake pedal’s distance. A small quadratic filter smooths out tiny movements so your brake feels natural and responsive. The ESP hosts a simple HTTP endpoint (/brake) that returns this value.
+1. ESP8266 and Ultrasonic Sensor  
+   The ESP measures the brake pedal’s distance. A small filter smooths out tiny movements so the brake feels natural. The ESP hosts a HTTP endpoint (/brake) that returns this value.
 
 2. Python Controller Server  
-   - Reads your controller’s right stick forward to detect throttle.  
-   - Automatically presses and releases the W key using pyautogui when throttle exceeds the deadzone.  
-   - Polls the ESP for real-time brake values.  
+   - Reads your controller’s right stick forward to detect acceleration.  
+   - Automatically presses and releases the W key using pyautogui when throttle exceeds the threshold (around 0.05 on the right stick of the controller).  
+   - Reads the ESP for real-time brake values.  
    - Serves both throttle and brake data to the dashboard at http://localhost:5000/data.  
 
 3. Dashboard  
    - Open dashboard.html in any browser.  
    - Fetches live JSON data every 200 ms.  
-   - Displays throttle, brake, and smoothed motion with a modern, liquid-glass look.  
-   - Visual feedback makes it easy to see exactly how your LEGO pedals are performing.  
+   - Displays acceleration, brake, and smoothed motion.   
 
 ---
 
@@ -65,18 +64,15 @@ With this setup:
 
 4. Open the Dashboard
 
-Open `dashboard.html` in a browser. You’ll see live updates for:
+   Open `dashboard.html` in a browser. You’ll see live updates for:
 
-- **Throttle**  
-- **Brake**  
-- **Smoothed pedal motion**
+   - **Throttle**  
+   - **Brake**  
 
 5. Controls
-
-- **Right stick forward**: Presses `W` automatically  
-- **Brake pedal movement**: Updates live using the ESP’s **quadratic motion detection**
+   - **Right stick forward**: Presses `W` automatically  
+   - **Brake pedal movement**: Updates live using the ESP’s **quadratic motion detection**
 
 # Credits
-
 >  **Hardware and Python logic**: Aarav Kapasi  
 >  **HTML dashboard and ESP snippets**: Generated with AI and customized by Aarav Kapasi  
