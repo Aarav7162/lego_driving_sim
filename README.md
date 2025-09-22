@@ -4,7 +4,7 @@ This is a custom LEGO build with pneumatic pedals and steering wheel. It uses th
 
 With this setup:  
 - The gas pedal (controlled by pneumatic pressure) is mapped to the controller's right stick forward.  
-- The brake pedal uses an ultrasonic sensor on an ESP8266.  
+- The brake pedal uses an IR Sensor on an ESP8266.  
 - The steering wheel can be mapped to joystick or keyboard inputs. It uses an Xbox controller and a mechanically contolled steering wheel (photos attached under images/)  
 - Everything is displayed live on the HTML dashboard.  
 
@@ -33,7 +33,7 @@ With this setup:
    - Reads steering inputs from the game controller.
    - Converts brake inputs from the cloud into `S` (RT) or `D` (LT) keypresses.
    - Automatically handles controller calibration if multiple controllers are present.
-3. Dashboard fetches `braking_value` from Ninja IoT every 200ms and displays it live.
+3. Dashboard fetches `braking_value` from Ninja IoT (uses an IR sensor to detect proximity of pedal) every 200ms and displays it live.
 
 ---
 
@@ -41,7 +41,7 @@ With this setup:
 
 1. Flash the ESP8266  
    - Open esp_brake.ino.  
-   - Set your Wi-Fi SSID/password/UID and configure the ultrasonic sensor pins.  
+   - Set your Wi-Fi SSID/password/UID and configure the IR sensor pin.  
 
 2. Install Python Dependencies  
    ```bash
