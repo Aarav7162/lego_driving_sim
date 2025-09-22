@@ -71,16 +71,12 @@ Open `dashboard.html` in a browser. You’ll see live updates for:
 - **Brake**  
 - **Smoothed pedal motion**
 
----
-
 5. Controls
 
 - **Right stick forward**: Presses `W` automatically  
 - **Brake pedal movement**: Updates live using the ESP’s **quadratic motion detection**
 
----
-
 # Credits
 
-- **Hardware and Python logic**: Aarav Kapasi  
-- **HTML dashboard and ESP snippets**: Generated with AI and customized by Aarav Kapasi  
+>  **Hardware and Python logic**: Aarav Kapasi  
+>  **HTML dashboard and ESP snippets**: Generated with AI and customized by Aarav Kapasi  
