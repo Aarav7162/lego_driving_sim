@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Braking Dashboard</title>
+<style>
+  body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #111;
+    font-family: 'Courier New', monospace;
+    color: #00ffcc;
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 50px;
+    text-shadow: 0 0 10px #00ffcc;
+  }
+
+  #brakeValue {
+    font-weight: bold;
+    text-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffcc;
+    transition: all 0.2s ease-in-out;
+  }
+
+  #unit {
+    font-size: 2rem;
+    margin-top: 10px;
+    color: #88ffdd;
+  }
+</style>
+</head>
+<body>
+
+<h1>Braking Value</h1>
+<div id="brakeValue">0</div>
+<div id="unit">units</div>
+
+<script>
+async function updateBrakeValue() {
+  try {
+    const resp = await fetch('https://iot.roboninja.in/index.php?action=read&UID=YOUR_UID&braking_value');
+    const text = await resp.text();
+    let value = parseFloat(text);
+
+    if (isNaN(value)) value = 0;
+
+    const brakeDisplay = document.getElementById('brakeValue');
+    brakeDisplay.textContent = value.toFixed(2);
+
+    const minSize = 4;
+    const maxSize = 8;
+    brakeDisplay.style.fontSize = (minSize + (maxSize - minSize) * Math.min(value / 100, 1)) + 'rem';
+  } catch (e) {
+    console.error('Error fetching braking value:', e);
+  }
+}
+
+setInterval(updateBrakeValue, 200);
+</script>
+
+</body>
+</html>
