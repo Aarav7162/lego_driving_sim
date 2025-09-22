@@ -68,6 +68,6 @@ With this setup:
       - RT: Presses and hold `A`
 
 
-# Credits
+## Credits
 >  **Hardware, ESP and Python logic**: Aarav Kapasi  
 >  **HTML dashboard**: Generated with AI and customized by Aarav Kapasi  
