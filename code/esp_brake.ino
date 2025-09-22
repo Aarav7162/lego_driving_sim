@@ -1,16 +1,20 @@
 #include <NinjaIoT.h>
-#include <Wire.h>
 
 NinjaIoT iot;
-int brakeValue = 0;
+
+const int irPin = D2;
 
 void setup() {
   Serial.begin(115200);
-  iot.connect("wifi-name","wifi-pass","YOUR_UID");
+  pinMode(irPin, INPUT);
+  iot.connect("WiFi_Name", "WiFi_Pass", "Platform_UID");
 }
 
 void loop() {
-  brakeValue = analogRead(A0);
-  iot.WriteVar("braking_value", brakeValue);
-  delay(100);
+  iot.ReadAll();
+
+  int irValue = digitalRead(irPin);
+  iot.WriteVar("braking_value", irValue);
+
+  delay(1);
 }
